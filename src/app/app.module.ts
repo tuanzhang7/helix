@@ -33,6 +33,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +63,8 @@ import { AuthGuardAdmin } from './services/auth-guard-admin.service';
     BrowserAnimationsModule,
     FlexLayoutModule,
     RoutingModule,
-    SharedModule
+    SharedModule,
+    ChartsModule
   ],
   exports: [MatButtonModule, MatCheckboxModule, MatToolbarModule],
   providers: [
