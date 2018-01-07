@@ -34,6 +34,7 @@ import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 
 import { ChartsModule } from 'ng2-charts';
+import {lodash} from 'lodash';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +65,8 @@ import { ChartsModule } from 'ng2-charts';
     FlexLayoutModule,
     RoutingModule,
     SharedModule,
-    ChartsModule
+    ChartsModule,
+    lodash
   ],
   exports: [MatButtonModule, MatCheckboxModule, MatToolbarModule],
   providers: [

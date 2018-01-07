@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 import { RepoService } from '../services/repo.service';
 import { ToastComponent } from '../shared/toast/toast.component';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-repos',
@@ -26,7 +27,9 @@ export class RepoListComponent implements OnInit {
 
   getRepos() {
     this.repoService.getLastSevenDays().subscribe(
-      data => this.repos = data,
+      data => {
+        this.barChartLabels = this.mapLabels(data);
+      },
       error => console.log(error),
       () => this.isLoading = false
     );
@@ -35,6 +38,10 @@ export class RepoListComponent implements OnInit {
       error => console.log(error),
       () => this.isLoading = false
     );
+  }
+
+  mapLabels(data) {
+    return data;
   }
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
@@ -46,9 +53,10 @@ export class RepoListComponent implements OnInit {
  
   public barChartData:any[] = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series C'}
   ];
- 
+  
   // events
   public chartClicked(e:any):void {
     console.log(e);
