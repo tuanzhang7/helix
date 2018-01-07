@@ -4,8 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 import { RepoService } from '../services/repo.service';
 import { ToastComponent } from '../shared/toast/toast.component';
-import _ from 'lodash';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-repos',
   templateUrl: './list.component.html'
@@ -28,7 +27,16 @@ export class RepoListComponent implements OnInit {
   getRepos() {
     this.repoService.getLastSevenDays().subscribe(
       data => {
-        this.barChartLabels = this.mapLabels(data);
+        this.barChartLabels = this.mapCols(data, "date");
+        this.cardDetails = this.mapCols(data, 'card');
+        this.retailDetails = this.mapCols(data, 'retail');
+        this.totalDetails = this.mapCols(data, 'total');
+        this.barChartData = [
+          {data: this.cardDetails, label: 'Card'},
+          {data: this.retailDetails, label: 'Retail'},
+          {data: this.totalDetails, label: 'Total'}
+        ];
+
       },
       error => console.log(error),
       () => this.isLoading = false
@@ -40,21 +48,32 @@ export class RepoListComponent implements OnInit {
     );
   }
 
-  mapLabels(data) {
-    return data;
+  mapCols(data, col) {
+    const labelList = _.map(data.sales,(item) => {
+      if (col === 'date') {
+        return new Date(_.get(item, col)).toISOString().split('T')[0];
+      } else {
+        return _.get(item, col);
+      }
+    }) 
+    return labelList;
   }
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels:string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels:string[];
+  public cardDetails:string[] ; 
+  public retailDetails: string[]; 
+  public totalDetails: string[];
+
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
  
   public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series C'}
+    {data: [1,1,1,1,1,1,1], label: 'Card'},
+    {data: [1,1,1,1,1,1,1], label: 'Retail'},
+    {data: [1,1,1,1,1,1,1], label: 'Total'}
   ];
   
   // events
@@ -66,24 +85,7 @@ export class RepoListComponent implements OnInit {
     console.log(e);
   }
  
-  public randomize():void {
-    // Only Change 3 values
-    let data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      (Math.random() * 100),
-      56,
-      (Math.random() * 100),
-      40];
-    let clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    this.barChartData = clone;
-    /**
-     * (My guess), for Angular to recognize the change in the dataset
-     * it has to change the dataset variable directly,
-     * so one way around it, is to clone the data, change it and then
-     * assign it;
-     */
+  public print():void {
+
   }
 }

@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('nlb-isbn App', () => {
+describe('helix report App', () => {
   let page: AppPage;
 
   beforeEach(() => {
