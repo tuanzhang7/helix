@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  @media (min-width: 1800px) {
+      .container{
+          max-width: 1400px;
+          margin: auto;
+      }
+  }
+  
