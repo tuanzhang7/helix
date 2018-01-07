@@ -7,8 +7,8 @@ describe('helix report App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display graph title', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getParagraphText()).toEqual('last 7 days');
   });
 });

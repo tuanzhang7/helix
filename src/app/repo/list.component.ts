@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 import { RepoService } from '../services/repo.service';
 import { ToastComponent } from '../shared/toast/toast.component';
@@ -12,11 +11,9 @@ import * as _ from 'lodash';
 export class RepoListComponent implements OnInit {
 
   repos = [];
-  count = 0;
   isLoading = true;
 
   constructor(private repoService: RepoService,
-              private formBuilder: FormBuilder,
               private http: Http,
               public toast: ToastComponent) { }
 
@@ -27,7 +24,7 @@ export class RepoListComponent implements OnInit {
   getRepos() {
     this.repoService.getLastSevenDays().subscribe(
       data => {
-        this.barChartLabels = this.mapCols(data, "date");
+        this.barChartLabels = this.mapLabel(data);
         this.cardDetails = this.mapCols(data, 'card');
         this.retailDetails = this.mapCols(data, 'retail');
         this.totalDetails = this.mapCols(data, 'total');
@@ -41,11 +38,13 @@ export class RepoListComponent implements OnInit {
       error => console.log(error),
       () => this.isLoading = false
     );
-    this.repoService.getToday().subscribe(
-      data => this.count = data.count,
-      error => console.log(error),
-      () => this.isLoading = false
-    );
+    // this.repoService.getToday().subscribe(
+    //   data => {
+        
+    //   },
+    //   error => console.log(error),
+    //   () => this.isLoading = false
+    // );
   }
 
   mapCols(data, col) {
@@ -58,6 +57,14 @@ export class RepoListComponent implements OnInit {
     }) 
     return labelList;
   }
+
+  mapLabel(data) {
+    const labelList = _.map(data.sales,(item) => {
+      return new Date(_.get(item, "date")).toISOString().split('T')[0];
+    }) 
+    return labelList;
+  }
+
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
     responsive: true
@@ -70,11 +77,7 @@ export class RepoListComponent implements OnInit {
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
  
-  public barChartData:any[] = [
-    {data: [1,1,1,1,1,1,1], label: 'Card'},
-    {data: [1,1,1,1,1,1,1], label: 'Retail'},
-    {data: [1,1,1,1,1,1,1], label: 'Total'}
-  ];
+  public barChartData:any[] = [];
   
   // events
   public chartClicked(e:any):void {
